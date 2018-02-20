@@ -15,7 +15,7 @@ chrome.webNavigation.onCommitted.addListener(
 
 function blur(tabId) {
   chrome.tabs.executeScript(tabId, {
-    file: "blur.js"
+    file: "js/blur.js"
   });
 }
 
