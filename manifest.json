@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Faceblock",
+  "description": "Take back your brain!",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "fb.png",
+    "default_popup": "faceblock.html"
+  },
+  "permissions": ["webNavigation", "tabs", "https://www.facebook.com/"],
+  "background": {
+    "scripts": ["faceblock.js"],
+    "persistent": false
+  }
+}
