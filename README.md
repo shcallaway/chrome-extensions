@@ -1,3 +1,3 @@
 # Chrome Extensions
 
-* [Faceblock](faceblock/README.md) - Break away from infinite scrolling sites, like Facebook
+* [Scroll Guard](scroll-guard/README.md) - Combat the addictive effects of infinite scrolling (i.e. Facebook)

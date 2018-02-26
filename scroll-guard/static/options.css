@@ -1,0 +1,49 @@
+body {
+  margin: 20px;
+  padding: 0px;
+}
+
+input {
+  width: 200px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.list {
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.item {
+  padding: 10px;
+}
+
+.item:hover {
+  background-color: rgba(255, 96, 96, 0.2);
+  cursor: pointer;
+}
+
+.toast {
+  float: right;
+  opacity: 0;
+  min-width: 200px;
+  padding: 10px;
+  border-radius: 2px;
+  background-color: rgb(232, 232, 232);
+  transition: opacity 0.2s;
+}

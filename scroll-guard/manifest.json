@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Scroll Guard",
+  "icons": {
+    // TODO: Get icon
+    // https://developer.chrome.com/extensions/manifest/icons
+    // "16": ""
+  },
+  "description": "Helps you break away from infinite scrolling sites",
+  "version": "1.0",
+  "permissions": [
+    "webNavigation",
+    // TODO: Consider using activeTab
+    "tabs",
+    "storage",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+  "options_page": "static/options.html"
+}
