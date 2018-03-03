@@ -4,7 +4,6 @@
   "version": "1.0",
   "description":
     "Combat the addictive effects of infinite scrolling sites, like Facebook",
-  "default_locale": "en",
   "icons": {
     "16": "static/icon16.png",
     "48": "static/icon48.png",

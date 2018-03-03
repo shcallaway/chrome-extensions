@@ -50,6 +50,8 @@ function activateScrollGuard(tabId) {
   }
 
   chrome.webNavigation.onCompleted.addListener(async event => {
+    // This filters out subframe navigation events
+    if (event.frameId !== 0) return;
     console.log(`Navigating: ${event.url}`);
     // Get up-to-date blacklist from storage
     blacklist = await Storage.read();
