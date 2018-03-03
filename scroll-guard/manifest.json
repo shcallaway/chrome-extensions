@@ -1,13 +1,15 @@
 {
   "manifest_version": 2,
   "name": "Scroll Guard",
+  "version": "1.0",
+  "description":
+    "Combat the addictive effects of infinite scrolling sites, like Facebook",
+  "default_locale": "en",
   "icons": {
     "16": "static/icon16.png",
     "48": "static/icon48.png",
     "128": "static/icon128.png"
   },
-  "description": "Helps you break away from infinite scrolling sites",
-  "version": "1.0",
   "permissions": ["webNavigation", "tabs", "storage", "<all_urls>"],
   "background": {
     "scripts": ["js/main.js"],
