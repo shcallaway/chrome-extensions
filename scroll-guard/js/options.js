@@ -50,7 +50,7 @@ class ListModel {
   add(value) {
     this.items.push(value);
     this.view.render();
-    Storage.write(Storage.keys.sites, this.items);
+    Storage.write(Storage.keys.blacklist, this.items);
     this.toast.display(`Added '${value}'.`);
   }
 
@@ -58,15 +58,16 @@ class ListModel {
     const index = this.items.indexOf(value);
     if (index > -1) this.items.splice(index, 1);
     this.view.render();
-    Storage.write(Storage.keys.sites, this.items);
+    Storage.write(Storage.keys.blacklist, this.items);
     this.toast.display(`Removed '${value}'.`);
   }
 }
 
+// TODO: Move to separate file?
 class Storage {
   static get keys() {
     return {
-      sites: "sites"
+      blacklist: "blacklist"
     };
   }
 
@@ -109,6 +110,7 @@ class Storage {
   }
 }
 
+// TODO: Replace toast with input validation
 class Toast {
   constructor() {
     this.element = document.getElementsByClassName("toast")[0];
@@ -155,18 +157,10 @@ function isEnterKeyPress(keyCode) {
   return keyCode === 13;
 }
 
-function setDefaultBlacklist() {
-  const sites = ["https://www.facebook.com"];
-  sites.forEach(site => {
-    list;
-  });
-  list.add();
-}
-
 async function main() {
-  const sites = await Storage.read(Storage.keys.sites);
+  const blacklist = await Storage.read(Storage.keys.blacklist);
   const toast = new Toast();
-  const list = new ListModel(sites, toast);
+  const list = new ListModel(blacklist, toast);
 
   const input = document.querySelectorAll("input[type=text]")[0];
   input.addEventListener("keydown", event => {
