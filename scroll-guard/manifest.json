@@ -16,7 +16,7 @@
     "<all_urls>"
   ],
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": ["js/main.js"],
     "persistent": false
   },
   "options_page": "static/options.html"

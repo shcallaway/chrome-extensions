@@ -1,17 +1,11 @@
 body {
-  margin: 20px;
-  padding: 0px;
+  margin: 0px;
 }
 
 input {
   width: 200px;
   padding: 5px;
   font-size: 13px;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
 }
 
 h1 {
@@ -27,6 +21,7 @@ h2 {
 .list {
   font-size: 13px;
   margin-top: 15px;
+  max-width: 500px;
 }
 
 .item {
@@ -39,11 +34,26 @@ h2 {
 }
 
 .toast {
-  float: right;
-  opacity: 0;
-  min-width: 200px;
-  padding: 10px;
-  border-radius: 2px;
-  background-color: rgb(232, 232, 232);
-  transition: opacity 0.2s;
+  padding-top: 10px;
+  color: red;
+}
+
+footer {
+  background-color: #f5f5f5;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding-left: 10px;
+}
+
+header {
+  padding: 5px 0 5px 0;
+  background-color: #f5f5f5;
+  width: 100%;
+  padding-left: 10px;
+}
+
+content {
+  display: block;
+  margin-left: 10px;
 }

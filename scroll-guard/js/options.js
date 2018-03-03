@@ -43,109 +43,63 @@ class ListView {
 class ListModel {
   constructor(items, toast) {
     this.items = items || [];
-    this.view = new ListView(this);
     this.toast = toast;
+    this.view = new ListView(this);
   }
 
   add(value) {
     this.items.push(value);
     this.view.render();
-    Storage.write(Storage.keys.blacklist, this.items);
-    this.toast.display(`Added '${value}'.`);
+    Storage.write(this.items);
+    this.toast.success(`${value} was added to your blacklist.`);
   }
 
   remove(value) {
     const index = this.items.indexOf(value);
     if (index > -1) this.items.splice(index, 1);
     this.view.render();
-    Storage.write(Storage.keys.blacklist, this.items);
-    this.toast.display(`Removed '${value}'.`);
+    Storage.write(this.items);
   }
 }
 
-// TODO: Move to separate file?
 class Storage {
-  static get keys() {
-    return {
-      blacklist: "blacklist"
-    };
-  }
-
-  static read(key) {
-    Storage._verifyStorageKey(key);
-
+  static read() {
     return new Promise((resolve, reject) => {
-      chrome.storage.sync.get(key, data => {
-        resolve(data[key]);
+      chrome.storage.sync.get("blacklist", data => {
+        resolve(data.blacklist);
       });
     });
   }
 
-  static write(key, value) {
-    Storage._verifyStorageKey(key);
-
-    // Chrome storage API expects an object
-    const data = Storage._makeObjectFromParams(key, value);
+  static write(blacklist) {
     return new Promise((resolve, reject) => {
-      chrome.storage.sync.set(data, resolve);
+      chrome.storage.sync.set(
+        {
+          blacklist
+        },
+        resolve
+      );
     });
-  }
-
-  // PRIVATE
-
-  static _verifyStorageKey(key) {
-    if (!Storage._isValidKey(key)) {
-      throw new Error(`'${key}' is not a valid storage key.`);
-    }
-  }
-
-  static _makeObjectFromParams(key, value) {
-    const object = new Object();
-    object[key] = value;
-    return object;
-  }
-
-  static _isValidKey(key) {
-    return !!Storage.keys[key];
   }
 }
 
-// TODO: Replace toast with input validation
 class Toast {
   constructor() {
     this.element = document.getElementsByClassName("toast")[0];
-    this.messages = [];
-    this.active = false;
   }
 
-  display(message) {
-    this.messages.push(message);
-
-    if (!this.active) {
-      this._activate();
-      this._next();
-    }
+  success(message) {
+    this.element.style.color = "green";
+    this.element.textContent = message;
   }
 
-  // PRIVATE
-
-  _deactivate() {
-    this.element.style.opacity = 0;
-    this.active = false;
+  failure(message) {
+    this.element.style.color = "red";
+    this.element.textContent = message;
   }
 
-  _activate() {
-    this.element.style.opacity = 1;
-    this.active = true;
-  }
-
-  _next() {
-    if (this.messages.length) {
-      this.element.textContent = this.messages.shift();
-      setTimeout(this._next.bind(this), 3000);
-    } else {
-      this._deactivate();
-    }
+  clear() {
+    this.element.textContent = null;
   }
 }
 
@@ -157,27 +111,29 @@ function isEnterKeyPress(keyCode) {
   return keyCode === 13;
 }
 
-async function main() {
-  const blacklist = await Storage.read(Storage.keys.blacklist);
+document.addEventListener("DOMContentLoaded", async () => {
+  const blacklist = await Storage.read();
   const toast = new Toast();
   const list = new ListModel(blacklist, toast);
 
   const input = document.querySelectorAll("input[type=text]")[0];
   input.addEventListener("keydown", event => {
     // Only check input when 'enter' is pressed
-    if (!isEnterKeyPress(event.keyCode)) return;
+    if (!isEnterKeyPress(event.keyCode)) {
+      toast.clear();
+      return;
+    }
 
     event.preventDefault();
     const value = input.value;
 
     if (!isValidDomain(value)) {
-      toast.display(`'${value}' does not appear to be a valid URL.`);
+      toast.failure(`${value} does not appear to be a valid URL.`);
       return;
     }
 
+    toast.clear();
     list.add(value);
     input.value = "";
   });
-}
-
-document.addEventListener("DOMContentLoaded", main);
+});
