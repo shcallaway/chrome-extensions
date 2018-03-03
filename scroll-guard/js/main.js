@@ -6,26 +6,7 @@ const DEFAULT_BLACKLIST = [
 const SCROLL_GUARD =
   'const page=document.getElementsByTagName("body")[0];let scrollCount=0;window.onscroll=function(){setBlur(page,scrollCount/30);scrollCount++};function setBlur(element,px){element.style.filter=`blur(${px}px)`}';
 
-class Storage {
-  static read() {
-    return new Promise((resolve, reject) => {
-      chrome.storage.sync.get("blacklist", data => {
-        resolve(data.blacklist);
-      });
-    });
-  }
-
-  static write(blacklist) {
-    return new Promise((resolve, reject) => {
-      chrome.storage.sync.set(
-        {
-          blacklist
-        },
-        resolve
-      );
-    });
-  }
-}
+// UTILS
 
 function isBlacklisted(url, blacklist) {
   return blacklist.some(blacklisted => {
@@ -41,11 +22,31 @@ function activateScrollGuard(tabId) {
   });
 }
 
+class Storage {
+  static read(key) {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(key, data => {
+        resolve(data[key]);
+      });
+    });
+  }
+
+  static write(key, value) {
+    return new Promise((resolve, reject) => {
+      const data = new Object();
+      data[key] = value;
+      chrome.storage.sync.set(data, resolve);
+    });
+  }
+}
+
+// MAIN
+
 (async function() {
   // This initializes the blacklist upon installation
-  let blacklist = await Storage.read();
+  let blacklist = await Storage.read("blacklist");
   if (blacklist === undefined) {
-    await Storage.write(DEFAULT_BLACKLIST);
+    await Storage.write("blacklist", DEFAULT_BLACKLIST);
     blacklist = DEFAULT_BLACKLIST;
   }
 
@@ -54,7 +55,7 @@ function activateScrollGuard(tabId) {
     if (event.frameId !== 0) return;
     console.log(`Navigating: ${event.url}`);
     // Get up-to-date blacklist from storage
-    blacklist = await Storage.read();
+    blacklist = await Storage.read("blacklist");
     if (isBlacklisted(event.url, blacklist)) {
       console.log("URL is blacklisted.");
       activateScrollGuard(event.tabId);

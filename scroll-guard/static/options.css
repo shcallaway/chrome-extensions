@@ -21,16 +21,32 @@ h2 {
 .list {
   font-size: 13px;
   margin-top: 15px;
+  min-width: 300px;
   max-width: 500px;
+  width: 40%;
 }
 
 .item {
   padding: 10px;
+  border-bottom: 1px solid #cccccc;
+}
+
+@keyframes slide {
+  from {
+    margin-left: 100%;
+  }
+  to {
+    margin-left: 0%;
+  }
 }
 
 .item:hover {
   background-color: rgba(255, 96, 96, 0.2);
   cursor: pointer;
+}
+
+.item:active {
+  background-color: rgba(255, 96, 96, 0.4);
 }
 
 .toast {
